@@ -138,7 +138,7 @@ async def time_is_up(uid, idx, bot):
         except Exception as e:
             logger.warning(f"time_is_up error: {e}")
     else:
-        # O'yin tugadi
+        # Test tugadi
         score = session["score"]
         pct = score / QUIZ_LENGTH * 100
         grade = get_grade(pct)
