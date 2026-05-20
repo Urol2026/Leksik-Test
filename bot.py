@@ -37,7 +37,7 @@ def top10_text():
         lines.append(
             f"{medals[i]} {d['name']}\n"
             f"   Eng yaxshi: {d['best']}/{QUIZ_LENGTH} | "
-            f"O'yinlar: {d['games']} | O'rtacha: {avg:.1f}\n"
+            f"Testlar: {d['games']} | O'rtacha: {avg:.1f}\n"
         )
     return "\n".join(lines)
 
@@ -50,7 +50,7 @@ def get_grade(pct):
 
 def main_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("▶️ O'yinni boshlash", callback_data="start_quiz")],
+        [InlineKeyboardButton("▶️ Testni boshlash", callback_data="start_quiz")],
         [InlineKeyboardButton("🏆 Liderlar jadvali", callback_data="leaderboard")],
         [InlineKeyboardButton("📊 Statistika", callback_data="stats")],
     ])
@@ -151,14 +151,14 @@ async def time_is_up(uid, idx, bot):
                 chat_id=session["chat_id"],
                 message_id=session["message_id"],
                 text=(
-                    f"🎉 O'yin tugadi!\n\n"
+                    f"🎉 Test tugadi!\n\n"
                     f"👤 {name}\n"
                     f"🎯 Natija: {score}/{QUIZ_LENGTH} ({pct:.0f}%)\n"
                     f"{grade}\n\n"
                     f"Eng yaxshi natijangiz: {leaderboard[uid]['best']}/{QUIZ_LENGTH}"
                 ),
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("🔄 Yana o'ynash", callback_data="start_quiz")],
+                    [InlineKeyboardButton("🔄 Yana testda qatnashish", callback_data="start_quiz")],
                     [InlineKeyboardButton("🏆 Liderlar", callback_data="leaderboard")],
                     [InlineKeyboardButton("🏠 Menyu", callback_data="menu")],
                 ])
@@ -172,7 +172,7 @@ async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         f"👋 Salom, {name}!\n\n"
         f"📚 Lexicology Quiz\n\n"
         f"📌 Jami savollar: {len(ALL_QUESTIONS)} ta\n"
-        f"🎯 Har o'yinda: {QUIZ_LENGTH} ta tasodifiy savol\n"
+        f"🎯 Har testda: {QUIZ_LENGTH} ta tasodifiy savol\n"
         f"⏱ Har savolga: {TIME_LIMIT} sekund\n"
         f"🔀 Javoblar har safar aralashtirilib beriladi\n\n"
         f"Boshlaylik!",
@@ -222,7 +222,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             avg = d["total"] / d["games"] if d["games"] else 0
             text = (
                 f"📊 Sizning statistikangiz\n\n"
-                f"🎮 O'yinlar: {d['games']}\n"
+                f"🎮 Testlar: {d['games']}\n"
                 f"🏆 Eng yaxshi: {d['best']}/{QUIZ_LENGTH}\n"
                 f"📈 O'rtacha ball: {avg:.1f}\n"
                 f"🎯 Jami to'g'ri: {d['total']}"
@@ -232,7 +232,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await q.edit_message_text(
             text,
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("▶️ O'ynash", callback_data="start_quiz")],
+                [InlineKeyboardButton("▶️ Testda qatnashish", callback_data="start_quiz")],
                 [InlineKeyboardButton("🔙 Ortga", callback_data="menu")],
             ])
         )
@@ -245,7 +245,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         chosen = parts[2]
 
         if uid not in user_sessions:
-            await q.answer("O'yin topilmadi. /start bosing.", show_alert=True)
+            await q.answer("Test topilmadi. /start bosing.", show_alert=True)
             return
 
         session = user_sessions[uid]
@@ -295,13 +295,13 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             save_score(uid, name, score)
             try:
                 await q.edit_message_text(
-                    f"🎉 O'yin tugadi!\n\n"
+                    f"🎉 Test tugadi!\n\n"
                     f"👤 {name}\n"
                     f"🎯 Natija: {score}/{QUIZ_LENGTH} ({pct:.0f}%)\n"
                     f"{grade}\n\n"
                     f"Eng yaxshi natijangiz: {leaderboard[uid]['best']}/{QUIZ_LENGTH}",
                     reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton("🔄 Yana o'ynash", callback_data="start_quiz")],
+                        [InlineKeyboardButton("🔄 Yana testda qatnashish", callback_data="start_quiz")],
                         [InlineKeyboardButton("🏆 Liderlar", callback_data="leaderboard")],
                         [InlineKeyboardButton("🏠 Menyu", callback_data="menu")],
                     ])
@@ -313,7 +313,7 @@ async def button(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         idx = int(data.split("|")[1])
 
         if uid not in user_sessions:
-            await q.answer("O'yin topilmadi. /start bosing.", show_alert=True)
+            await q.answer("Test topilmadi. /start bosing.", show_alert=True)
             return
 
         session = user_sessions[uid]
